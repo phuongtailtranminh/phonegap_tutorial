@@ -464,6 +464,8 @@ Change your **\\www\\index.html** file into these:
     </script>
 </body>
 
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/limgv.png)
+
 </html>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
