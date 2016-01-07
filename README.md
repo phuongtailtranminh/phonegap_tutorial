@@ -42,7 +42,7 @@ npm -version
 
 If you see something like this, that mean you’ve installed Nodejs correctly!
 
-![](<tutorial_img/npm_v.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/npm_v.png)
 
 In next step, run this command to install PhoneGap CLI:
 
@@ -58,7 +58,7 @@ phonegap -version
 
 If you see something like this, that mean you’ve installed PhoneGap correctly!
 
-![](<tutorial_img/phonegap_v.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/phonegap_v.png)
 
  
 
@@ -93,9 +93,9 @@ Studio Code - VCS then restart it.
 To create Android Virtual Machine, firstly start Genymotion, click **Add** then
 search for: **Custom Phone - 4.1.1 API 16**
 
-![](<tutorial_img/geny_s.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/geny_s.png)
 
-![](<tutorial_img/geny_2.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/geny_2.png)
 
 After click **Next** button, it’ll download system image and set up for you.
 Take a coffe because it may take a while, depend on your internet connection.
