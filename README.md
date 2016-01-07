@@ -372,4 +372,99 @@ Add 2 more functions:
 
 Save your changes and use AVM to connect your app.
 
+Turn on Dummy Camera (for testing):
+
+![](<tutorial_img/camera_dummy_camera.png>)
+
+This is what you’ll see:
+
+![](<tutorial_img/camera_app.png>)
+
+Click **Take a picture** button to get a picture.
+
+This is what you’ll see:
+
+![](<tutorial_img/camera_app_02.png>)
+
+ 
+
+12. Simple List Image View:
+---------------------------
+
+In this section, we’ll create an app can take your picture and show it right
+after that.
+
+Starting by create your project folder then change directory into it:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap create DemoListImageView
+$cd DemoListImageView
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+Make your app up and running:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap serve
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+Change your **\\www\\index.html** file into these:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <title>Hello World</title>
+</head>
+
+<body>
+    <div data-role="page" id="pageone">
+        <div data-role="main" class="ui-content">
+            <h2>Click On The Gear Icons!</h2>
+            <ul data-role="listview" data-inset="true">
+                <li data-role="divider">Browsers</li>
+                <li>
+                    <a href="#">
+                        <img src="http://icons.iconarchive.com/icons/google/chrome/256/Google-Chrome-icon.png">
+                        <h2>Google Chrome</h2>
+                        <p>Google Chrome is a free, open-source web browser. Released in 2008.</p>
+                    </a>
+                    <a href="#download" data-transition="pop" data-icon="gear">Download Browser</a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="http://people.mozilla.org/~faaborg/files/shiretoko/firefoxIcon/firefox-512.png">
+                        <h2>Mozilla Firefox</h2>
+                        <p>Firefox is a web browser from Mozilla. Released in 2004.</p>
+                    </a>
+                    <a href="#download" data-transition="pop" data-icon="gear">Download Browser</a>
+                </li>
+            </ul>
+        </div>
+        <button>Click me</button>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
  
