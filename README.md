@@ -107,7 +107,7 @@ Take a coffe because it may take a while, depend on your internet connection.
 
 Start your Android Virtual Machine by select it and click **Start** button
 
-![](<tutorial_img/geny_3.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/geny_3.png)
 
 In order to install Google Play, firstly you need drag-and-drop
 **Genymotion-ARM-Translation\_v1.1.zip** file to your virtual machine, then
@@ -123,7 +123,7 @@ virtual machine to install Google Play then restart.
 
 Accessing applications menu:
 
-![](<tutorial_img/geny_4.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/geny_4.png)
 
 Run **Play Store** app and search for **PhoneGap Developer** and install it.
 
@@ -139,7 +139,7 @@ Desktop:
 
 Shift + Right Click [for Windows] and Open command window here
 
-![](<tutorial_img/shift_rclick.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/shift_rclick.png)
 
 Type:
 
@@ -149,11 +149,11 @@ phonegap create HelloWorldApp
 
 to create new project.
 
-![](<tutorial_img/pg_create.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/pg_create.png)
 
 Then change directory to the new folder which we’ve just created:
 
-![](<tutorial_img/pg_cd.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/pg_cd.png)
 
 To run your app, type:
 
@@ -161,21 +161,21 @@ To run your app, type:
 phonegap serve
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-![](<tutorial_img/pg_serve.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/pg_serve.png)
 
 Now come back to our Android Virtual Machine - AVM, open up PhoneGap Developer
 app we’ve just installed in section 7.
 
-![](<tutorial_img/geny_6.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/geny_6.png)
 
-![](<tutorial_img/geny_7.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/geny_7.png)
 
 Type the second one IP:Port then click **Connect**
 
 After connected, you’ll see your very first PhoneGap app. Congratulation, your
 app was up and running!
 
-![](<tutorial_img/geny_8.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/geny_8.png)
 
 9. Let’s modify something
 -------------------------
@@ -185,7 +185,7 @@ Now is the more amazing part, you’ll change something, make this like your app
 Start your **Visual Studio Code**, then **File - Open Folders...** and navigate
 to your project location.
 
-![](<tutorial_img/vs_1.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/vs_1.png>)
 
 In the folder structure, access **www/index.html** then change:
 
@@ -203,7 +203,7 @@ Press **Ctrl + S** to save your change(s).
 
 Now, as you can see, the PHONEGAP text before has changed into HELLO GREENWICH
 
-![](<tutorial_img/geny_9.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/geny_9.png>)
 
 Your changes affected because your app will auto reload whenever you made
 changes in the code.
@@ -312,7 +312,7 @@ $phonegap create DemoCameraApp
 $cd DemoCameraApp
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-![](<tutorial_img/pg_create_02.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/pg_create_02.png>)
 
 Make your app up and running:
 
@@ -374,17 +374,17 @@ Save your changes and use AVM to connect your app.
 
 Turn on Dummy Camera (for testing):
 
-![](<tutorial_img/camera_dummy_camera.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/camera_dummy_camera.png>)
 
 This is what you’ll see:
 
-![](<tutorial_img/camera_app.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/camera_app.png>)
 
 Click **Take a picture** button to get a picture.
 
 This is what you’ll see:
 
-![](<tutorial_img/camera_app_02.png>)
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/camera_app_02.png>)
 
  
 
