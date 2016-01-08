@@ -21,7 +21,7 @@
 -   [Genymotio ARM
     Translation](<http://www14.zippyshare.com/v/44278764/file.html>)
 
--   [Google Play]
+-   [Google Play](<https://drive.google.com/uc?id=0B1GPk1Y1JG05dWhPWnltRHktZGs>)
 
 -   [Nodejs](<https://nodejs.org/en/>)
 
@@ -466,5 +466,5 @@ Change your **\\www\\index.html** file into these:
 
 </html>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+![](https://github.com/phuongtailtranminh/phonegap_tutorial/blob/master/tutorial_img/limgv.png)
  
