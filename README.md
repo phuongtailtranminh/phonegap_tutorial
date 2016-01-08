@@ -4,8 +4,6 @@
 1. Prerequisite:
 ----------------
 
- 
-
 -   [Visual Studio Code](<https://code.visualstudio.com/>)
 
 -   [JScript Editor
