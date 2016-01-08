@@ -481,6 +481,9 @@ But first, You need to setup something:
 
 -   [Rachet Bootstrap (for building UI)](<http://goratchet.com/>)
 
+Preference: [Simple Student Management App source
+code](<https://github.com/phuongtailtranminh/phonegap_tutorial/tree/master/demo-crud>)
+
 1. Execute these commands to create new PhoneGap project:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
