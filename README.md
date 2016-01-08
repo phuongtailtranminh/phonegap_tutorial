@@ -1,8 +1,6 @@
 *PhoneGap Tutorial*
 ===================
 
- 
-
 1. Prerequisite:
 ----------------
 
