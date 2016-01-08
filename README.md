@@ -26,6 +26,7 @@
 2. Install PhoneGap CLI:
 ------------------------
 
+
 In order to install PhoneGap via NPM, you have to install
 [Nodejs](<https://nodejs.org/en/>) first.
 
