@@ -121,13 +121,15 @@
             function onDelete(event) {
                 var studentID = event.target.id;
                 console.log('Delete id: ' + studentID);
-                alert('Are you sure to delete student with id = ' + studentID);
-                deleteStudent(studentID, function() {
-                    alert('Delete student successfully');
-                    showStudent();
-                }, function(err) {
-                    alert('Error when delete student. Error code: ' + err.code);
-                });
+                var result = confirm('Are you sure to delete student with id = ' + studentID);
+                if (result == true) {
+                    deleteStudent(studentID, function() {
+                        alert('Delete student successfully');
+                        showStudent();
+                    }, function(err) {
+                        alert('Error when delete student. Error code: ' + err.code);
+                    });
+                }
                 
             }
             
