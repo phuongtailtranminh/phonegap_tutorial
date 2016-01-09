@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+    <title>DEMO CRUD - List Student</title>
+</head>
+
+<body>
+    <h1>DEMO CRUD - List Student</h1>
+    <div style="text-align: center">
+        <a href="index.html">Home</a>
+        <br/>
+        <br/>
+
+        <table id="tblListStudent" align="center" style="border: 1px solid black">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>01</td>
+                <td>PhuongTM</td>
+                <td>22</td>
+                <td>Hanoi</td>
+                <td>
+                    <button id="btnDelete">Delete</button>
+                    <button id="btnUpdate">Update</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/DatabaseHandler.js"></script>
+    <script type="text/javascript" src="js/Student.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            function onDeviceReady() {
+                console.log("List page is ready");
+                getConnect('StudentDB');
+                showStudent(); 
+            }
+            
+            function showStudent(){
+                listStudent(function(lstStudent) {
+                    var tblListStudent = document.getElementById('tblListStudent');
+                    // refresh table
+                    tblListStudent.innerHTML = "";
+                    var tr = document.createElement('tr');
+                    var thID = document.createElement('th');                    
+                    var thName = document.createElement('th');
+                    var thAge = document.createElement('th');
+                    var thAddress = document.createElement('th');
+                    var thAction = document.createElement('th');
+                    
+                    thID.innerHTML = "ID";
+                    thName.innerHTML = "Name";
+                    thAge.innerHTML = "Age";
+                    thAddress.innerHTML = "Address";
+                    thAction.innerHTML = "Action";
+                    
+                    tr.appendChild(thID);
+                    tr.appendChild(thName);
+                    tr.appendChild(thAge);
+                    tr.appendChild(thAddress);
+                    tr.appendChild(thAction);
+                    
+                    tblListStudent.appendChild(tr);
+                    
+                    for (var i = 0; i < lstStudent.length; i++) {
+
+                        var tr = document.createElement('tr');
+                        var tdID = document.createElement('td');
+                        var tdName = document.createElement('td');
+                        var tdAge = document.createElement('td');
+                        var tdAddress = document.createElement('td');
+                        var tdAction = document.createElement('td');
+                        var btnDelete = document.createElement('button');
+                        btnDelete.id = lstStudent[i].id;
+                        btnDelete.innerHTML = "Delete";
+                        btnDelete.onclick = onDelete;
+                        var btnUpdate = document.createElement('button');
+                        btnUpdate.id = lstStudent[i].id;
+                        btnUpdate.innerHTML = "Update";
+                        btnUpdate.onclick = onUpdate;
+                        btnUpdate.setAttribute('data-student', '&name=' + lstStudent[i].name + '&age=' + lstStudent[i].age + '&address=' + lstStudent[i].address);
+                        tdID.innerHTML = lstStudent[i].id;
+                        tdName.innerHTML = lstStudent[i].name;
+                        tdAge.innerHTML = lstStudent[i].age;
+                        tdAddress.innerHTML = lstStudent[i].address;
+                                                
+                        tdAction.appendChild(btnDelete); 
+                        tdAction.appendChild(btnUpdate); 
+                        tr.appendChild(tdID);
+                        tr.appendChild(tdName);
+                        tr.appendChild(tdAge);
+                        tr.appendChild(tdAddress);
+                        tr.appendChild(tdAction);
+                        tblListStudent.appendChild(tr);
+                  }    
+                });
+            }
+            
+            function onDelete(event) {
+                var studentID = event.target.id;
+                console.log('Delete id: ' + studentID);
+                alert('Are you sure to delete student with id = ' + studentID);
+                deleteStudent(studentID, function() {
+                    alert('Delete student successfully');
+                    showStudent();
+                }, function(err) {
+                    alert('Error when delete student. Error code: ' + err.code);
+                });
+                
+            }
+            
+            function onUpdate(event) {
+                var studentID = event.target.id;
+                var studentInfo = event.target.getAttribute('data-student');
+                console.log('Update id: ' + studentID);
+                window.location = 'update.html?id=' + studentID + studentInfo;
+            }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>DEMO CRUD - Update</title>
+</head>
+
+<body>
+    <h1>DEMO CRUD - Update</h1>
+    <div style="text-align: center">
+        <a href="index.html">Home</a>
+        <table align="center">
+            <tr>
+                <td>ID: </td>
+                <td>
+                    <input id="txtID" type="text">
+                </td>
+                <td>
+                    <button id="btnFind">Find</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Name: </td>
+                <td>
+                    <input type="text" id="txtName">
+                </td>
+            </tr>
+            <tr>
+                <td>Age: </td>
+                <td>
+                    <input type="text" id="txtAge">
+                </td>
+            </tr>
+            <tr>
+                <td>Address: </td>
+                <td>
+                    <textarea id="txtAddress" rows="10"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnUpdate">Update</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Student.js"></script>
+    <script type="text/javascript" src="js/DatabaseHandler.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            
+            var txtName = null;
+            var txtAge = null;
+            var txtAddress = null;
+            var txtID = null;
+            
+            function onDeviceReady() {
+                console.log("Update page is ready");
+                
+                getConnect('StudentDB');
+                
+                var btnUpdate = document.getElementById('btnUpdate');
+                btnUpdate.addEventListener('click', onUpdate);
+                
+                var btnFind = document.getElementById('btnFind');
+                btnFind.addEventListener('click', onFind);
+                
+                // get passed url from list.html
+                var passedUrl = window.location.href;
+                console.log('URL: ' + passedUrl);
+                var id = extractInfo(passedUrl);
+                // load student information if found id in url                                
+                txtName = document.getElementById('txtName');
+                txtAge = document.getElementById('txtAge');
+                txtAddress = document.getElementById('txtAddress');                
+                txtID = document.getElementById('txtID');
+                     
+                if (id != null) {
+                    
+                    console.log('Student ID: ' + id[1]);
+                    console.log('Student Name: ' + id[2]);
+                    console.log('Student Age: ' + id[3]);
+                    console.log('Student Address: ' + id[4]);
+                    
+                    txtID.value = id[1];
+                    txtName.value = id[2];
+                    txtAge.value = id[3];
+                    txtAddress.value = id[4];
+                    
+                    
+                }
+            }
+            
+            function extractInfo(url) {
+                var decodedUrl = decodeURI(url);
+                var pattern = /\?id=(\d+)&name=(.*)&age=(\d+)&address=(.*)/; // get student id, name, age, address
+                return pattern.exec(decodedUrl);
+            }
+            
+            function onUpdate() {
+                updateStudent(txtID.value, txtName.value, txtAge.value, txtAddress.value, function() {
+                    alert('Update student successfully!');
+                }, function(err){
+                    alert('Error when updating student. Error code: ' + err.code);
+                });
+            }
+            
+            function onFind() {
+                var id = document.getElementById('txtID').value;
+                searchStudentByID(id, function(student) {
+                    var id = document.getElementById('txtID');
+                    var name = document.getElementById('txtName');
+                    var age = document.getElementById('txtAge');
+                    var address = document.getElementById('txtAddress');
+                    id.value = student.id;
+                    name.value = student.name;
+                    age.value = student.age;
+                    address.value = student.address;
+                }, function(err){
+                    alert('Student not found');
+                })
+            }
+    </script>
+</body>
+
+</html>

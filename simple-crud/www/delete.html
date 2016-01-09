@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>DEMO CRUD - Delete Student</title>
+</head>
+
+<body>
+    <h1>DEMO CRUD - Delete Student</h1>
+    <div style="text-align: center">
+        <a href="index.html">Home</a>
+        <table align="center">
+            <tr>
+                <td>Student ID: </td>
+                <td>
+                    <input type="text" id="txtStudentID" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnDelete">Delete</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Student.js"></script>
+    <script type="text/javascript" src="js/DatabaseHandler.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+        
+            var txtStudentID = null;
+            
+            function onDeviceReady() {
+                console.log("Delete page is ready");
+                getConnect('StudentDB');
+                txtStudentID = document.getElementById('txtStudentID');
+                
+                var btnDelete = document.getElementById('btnDelete');
+                btnDelete.addEventListener('click', onDelete);
+            }
+            
+            function onDelete() {
+                var studentID = txtStudentID.value;
+                searchStudentByID(txtStudentID.value, function(student){
+                    // confirm before delete student
+                    var result = confirm('Are you sure to delete student id = ' + studentID);
+                    if (result == true) {
+                        // delete student
+                        deleteStudent(student.id, function(){
+                            alert('Student ' + student.id + ' has been deleted');
+                        }, function(err) {
+                            alert('Error when deleting student. Error code: ' + err.code);
+                        });
+                    } 
+                }, function(err) {
+                    alert('Student not found');
+                });
+            }
+    </script>
+</body>
+
+</html>
