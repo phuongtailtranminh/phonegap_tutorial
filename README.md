@@ -26,7 +26,6 @@
 2. Install PhoneGap CLI:
 ------------------------
 
-
 In order to install PhoneGap via NPM, you have to install
 [Nodejs](<https://nodejs.org/en/>) first.
 
@@ -481,7 +480,7 @@ But first, You need to setup something:
 Preference: [Simple Student Management App source
 code](<https://github.com/phuongtailtranminh/phonegap_tutorial/tree/master/demo-crud>)
 
-1. Execute these commands to create new PhoneGap project:
+1.  Execute these commands to create new PhoneGap project:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $phonegap create demo-crud
@@ -490,25 +489,25 @@ $cd demo-crud
 
  
 
-2. After download Rachet Bootstrap, please unzip it, go to /dist folder.
+1.  After download Rachet Bootstrap, please unzip it, go to /dist folder.
 
 You need to:
 
-Copy **ratchet-theme-android.css** in **rachet bootstrap’s css** **folder **to
-our project’s** css folder**.
+Copy **ratchet-theme-android.css** in **rachet bootstrap’s css folder** to our
+project’s\*\* css folder\*\*.
 
-Copy **ratchet.min.css** in **rachet bootstrap’s css** **folder **to our
-project’s** css folder**.
+Copy **ratchet.min.css** in **rachet bootstrap’s css folder** to our
+project’s\*\* css folder\*\*.
 
-Copy **ratchet.min.js** in **rachet bootstrap’s js** **folder **to our
-project’s** js folder**.
+Copy **ratchet.min.js** in **rachet bootstrap’s js folder** to our project’s\*\*
+js folder\*\*.
 
 Copy **fonts** folder in **rachet bootstrap’s folder** to our project’s **www**
 folder.
 
  
 
-3. Open up **index.html** file in **/www** folder:
+1.  Open up **index.html** file in **/www** folder:
 
 Replace this line:
 
@@ -541,8 +540,8 @@ right above this line:
 
  
 
-4. Create **Student.js** (in /js folder) file for your Student model with these
-following code:
+1.  Create **Student.js** (in /js folder) file for your Student model with these
+    following code:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Constructor
@@ -567,8 +566,8 @@ function setName(name) {
 
  
 
-5. Create **DatabaseHandler.js** file (in /js folder) to handle your database
-work with these following code:
+1.  Create **DatabaseHandler.js** file (in /js folder) to handle your database
+    work with these following code:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var db = null;
@@ -656,7 +655,7 @@ function listStudent(updateListStudentUI) {
 
  
 
-6. Change your **www/index.js** file into this:
+1.  Change your **www/index.js** file into this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var detailView = document.getElementById('detailView');
@@ -816,14 +815,14 @@ var app = {
 
  
 
-7. Copy **loading.gif** and **uog\_logo.png** (from
-[here](<https://github.com/phuongtailtranminh/phonegap_tutorial/tree/master/demo-crud/www/img>))
-into your **/www/img** folder.
+1.  Copy **loading.gif** and **uog\_logo.png** (from
+    [here](<https://github.com/phuongtailtranminh/phonegap_tutorial/tree/master/demo-crud/www/img>))
+    into your **/www/img** folder.
 
  
 
-8. Run your project and connect with your phone by PhoneGap Developer app: (make
-sure that you’re in right project app folder before run this command).
+1.  Run your project and connect with your phone by PhoneGap Developer app:
+    (make sure that you’re in right project app folder before run this command).
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $phonegap serve
@@ -831,7 +830,7 @@ $phonegap serve
 
  
 
-9. If you follow the instruction, this is what you will see:
+1.  If you follow the instruction, this is what you will see:
 
 Main screen:
 
@@ -852,3 +851,674 @@ Delete screen:
 Update screen:
 
 ![](<tutorial_img/crud_app_05.png>)
+
+ 
+
+14. Simple CRUD (Create-Read-Update-Delete) App:
+------------------------------------------------
+
+Hi! In this tutorial I’ll show you how to create a simple CRUD app that working
+with SQLite.
+
+Firstly, you need to create your app using PhoneGap CLI:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap create simple-crud
+$cd simple-crud
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Then, Let’s change our **www/index.html** file to make links to other page such
+as: create.html, list.html, update.html and delete.html
+
+1. Change your **www/index.html** body into this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<body>
+    <h1>DEMO CRUD</h1>
+    <br/>
+    <div style="text-align: center">
+        <h1><a href="create.html">Create new student</a></h1>
+        <h1><a href="update.html">Update student</a></h1> 
+        <h1><a href="list.html">List student</a></h1>
+        <h1><a href="delete.html">Delete student</a></h1>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/DatabaseHandler.js"></script>
+        
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            function onDeviceReady() {                
+                console.log("Device is ready");
+                getConnect("StudentDB");
+                // create table if it doens't exist
+                createTable();   
+            }
+    </script>
+</body>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As you can see, I **deleted** link to **js/index.js** file because we can just
+simply write our back-end code in \<script\> tag.
+
+The line:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+document.addEventListener('deviceready', onDeviceReady, false);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+to make sure that device is ready for use, and execute onDeviceReady() function
+after it got ready.
+
+All your functions should run after device is ready.
+
+ 
+
+2. Create new **/www/js/DatabaseHandler.js** file with those code:
+
+Reference to [PhoneGap Storage
+API](<http://docs.phonegap.com/en/3.1.0/cordova_storage_storage.md.html#Storage>).
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var db = null;
+
+function getConnect(dbName) {
+    db = window.openDatabase(dbName, "1.0", dbName, 2000000) // 2MB database
+}
+
+function createTable(tx) {
+    db.transaction(function (tx) {
+        //tx.executeSql('DROP TABLE IF EXISTS Student');
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Student (ID Integer PRIMARY KEY, FullName, Age, Address);');
+    }, function (err) {
+        console.log('Error when creating table. Error code: ' + err.code);
+    }, function () {
+        console.log('Create table succesfully!');
+    });
+}
+
+function insertStudent(student, onSuccess, onFail) {
+    db.transaction(function (tx) {
+        tx.executeSql('INSERT INTO Student(FullName, Age, Address) VALUES (?, ?, ?)', [student.name, student.age, student.address]);
+    }, function (err) {
+        console.log('Error when inserting student. Error code: ' + err.code);
+        onFail();
+    }, function () {               
+        console.log('Insert student successfully!');
+        onSuccess();    
+    }); 
+}
+
+function updateStudent(id, name, age, address, onSuccess, onFail) {
+    db.transaction(function (tx) {
+        tx.executeSql('UPDATE Student SET FullName = ?, Age = ?, Address = ? WHERE ID = ?', [name, age, address, id]);        
+    }, function (err) {
+        console.log('Error when updating student. Error code: ' + err.code);
+        onFail(err);
+    }, function () {
+        console.log('Update student successfully!');
+        onSuccess();
+    });
+}
+
+function searchStudentByID(id, onSuccess, onFail) {
+    db.transaction(function (tx) {
+        console.log('ID: ' + id);
+        tx.executeSql('SELECT * FROM Student WHERE ID = ?', [id], function(tx, rs) {
+            var s = new Student(rs.rows.item(0).ID, rs.rows.item(0).FullName, rs.rows.item(0).Age, rs.rows.item(0).Address);
+            onSuccess(s);
+        });
+    }, function (err) {
+        console.log('Error when searching student. Error code: ' + err.code);
+        onFail(err);
+    });
+}
+
+function deleteStudent(id, onSuccess, onFail) {
+    db.transaction(function (tx) {
+        console.log('ID: ' + id);
+        tx.executeSql('DELETE FROM Student WHERE ID = ?', [id]);
+    }, function (err) {
+        console.log('Error when deleting student. Error code: ' + err.code);
+        onFail(err);
+    }, function () {
+        console.log('Delete student sucessfully!');
+        onSuccess();
+    });
+}
+
+
+function listStudent(onSuccess) {
+    db.transaction(function (tx) {
+        var lstStudent = [];
+        tx.executeSql('SELECT * FROM Student', [], function (tx, rs) {            
+            var numberOfItem = rs.rows.length;
+            console.log('Number of item: ' + numberOfItem);            
+            for (var index = 0; index < numberOfItem; index++) {                
+                var s = new Student(rs.rows.item(index).ID, rs.rows.item(index).FullName, rs.rows.item(index).Age, rs.rows.item(index).Address);
+                lstStudent.push(s);
+            }
+            onSuccess(lstStudent);
+        }, function (err) {
+            console.log('Error when selecting student. Error code: ' + err.code);
+        });
+    });
+
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+3. Create **www/js/Student.js** file to store Student model:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Constructor
+function Student(id, name, age, address){
+    this.id = id;
+    this.name = name;
+    this.age = age;
+    this.address = address;
+    this.setName = setName;
+}
+
+// Override toString()
+Student.prototype.toString = function() {
+    return "ID: " + this.id + "Name: " + this.name + ", Age: " + this.age + ", Address: " + this.address;
+}
+
+// Methods
+function setName(name) {
+    this.name = name;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+4. Create **www/create.html** file:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>DEMO CRUD - CREATE</title>
+</head>
+
+<body>
+    <h1>DEMO CRUD - CREATE</h1>
+    <div style="text-align: center">
+        <a href="index.html">Home</a>
+        <table align="center">
+            <tr>
+                <td>Name: </td>
+                <td>
+                    <input type="text" id="name">
+                </td>
+            </tr>
+            <tr>
+                <td>Age: </td>
+                <td>
+                    <input type="text" id="age">
+                </td>
+            </tr>
+            <tr>
+                <td>Address: </td>
+                <td>
+                    <textarea id="address" rows="10"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnCreate">Create</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Student.js"></script>
+    <script type="text/javascript" src="js/DatabaseHandler.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            
+            function onDeviceReady() {
+                console.log("Create page is ready");
+                var btnCreate = document.getElementById('btnCreate');
+                btnCreate.addEventListener('click', onCreate);
+            }
+            
+            function onCreate(){                 
+                var name = document.getElementById('name').value;
+                var age = document.getElementById('age').value;
+                var address = document.getElementById('address').value;
+                if (name != "" && age != "" && address != "") {
+                    if (!isNaN(age)) { // age should be numberic             
+                        getConnect("StudentDB");              
+                        var student = new Student(0, name, age, address);        
+                        insertStudent(student, function(){
+                            alert('Create student successfully!');
+                        }, function() {
+                            alert('Error when creating student');
+                        });
+                    } else {
+                        alert('Age should be numberic');
+                    }                    
+                } else {
+                    alert("All fields are required");
+                }
+            }
+    </script>
+</body>
+
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+5. Create **www/update.html** file:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>DEMO CRUD - Update</title>
+</head>
+
+<body>
+    <h1>DEMO CRUD - Update</h1>
+    <div style="text-align: center">
+        <a href="index.html">Home</a>
+        <table align="center">
+            <tr>
+                <td>ID: </td>
+                <td>
+                    <input id="txtID" type="text">
+                </td>
+                <td>
+                    <button id="btnFind">Find</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Name: </td>
+                <td>
+                    <input type="text" id="txtName">
+                </td>
+            </tr>
+            <tr>
+                <td>Age: </td>
+                <td>
+                    <input type="text" id="txtAge">
+                </td>
+            </tr>
+            <tr>
+                <td>Address: </td>
+                <td>
+                    <textarea id="txtAddress" rows="10"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnUpdate">Update</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Student.js"></script>
+    <script type="text/javascript" src="js/DatabaseHandler.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            
+            var txtName = null;
+            var txtAge = null;
+            var txtAddress = null;
+            var txtID = null;
+            
+            function onDeviceReady() {
+                console.log("Update page is ready");
+                
+                getConnect('StudentDB');
+                
+                var btnUpdate = document.getElementById('btnUpdate');
+                btnUpdate.addEventListener('click', onUpdate);
+                
+                var btnFind = document.getElementById('btnFind');
+                btnFind.addEventListener('click', onFind);
+                
+                // get passed url from list.html
+                var passedUrl = window.location.href;
+                console.log('URL: ' + passedUrl);
+                var id = extractInfo(passedUrl);
+                // load student information if found id in url                                
+                txtName = document.getElementById('txtName');
+                txtAge = document.getElementById('txtAge');
+                txtAddress = document.getElementById('txtAddress');                
+                txtID = document.getElementById('txtID');
+                     
+                if (id != null) {
+                    
+                    console.log('Student ID: ' + id[1]);
+                    console.log('Student Name: ' + id[2]);
+                    console.log('Student Age: ' + id[3]);
+                    console.log('Student Address: ' + id[4]);
+                    
+                    txtID.value = id[1];
+                    txtName.value = id[2];
+                    txtAge.value = id[3];
+                    txtAddress.value = id[4];
+                    
+                    
+                }
+            }
+            
+            function extractInfo(url) {
+                var decodedUrl = decodeURI(url);
+                var pattern = /\?id=(\d+)&name=(.*)&age=(\d+)&address=(.*)/; // get student id, name, age, address
+                return pattern.exec(decodedUrl);
+            }
+            
+            function onUpdate() {
+                updateStudent(txtID.value, txtName.value, txtAge.value, txtAddress.value, function() {
+                    alert('Update student successfully!');
+                }, function(err){
+                    alert('Error when updating student. Error code: ' + err.code);
+                });
+            }
+            
+            function onFind() {
+                var id = document.getElementById('txtID').value;
+                searchStudentByID(id, function(student) {
+                    var id = document.getElementById('txtID');
+                    var name = document.getElementById('txtName');
+                    var age = document.getElementById('txtAge');
+                    var address = document.getElementById('txtAddress');
+                    id.value = student.id;
+                    name.value = student.name;
+                    age.value = student.age;
+                    address.value = student.address;
+                }, function(err){
+                    alert('Student not found');
+                })
+            }
+    </script>
+</body>
+
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+6. Create **www/list.html** file:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+    <title>DEMO CRUD - List Student</title>
+</head>
+
+<body>
+    <h1>DEMO CRUD - List Student</h1>
+    <div style="text-align: center">
+        <a href="index.html">Home</a>
+        <br/>
+        <br/>
+
+        <table id="tblListStudent" align="center" style="border: 1px solid black">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>01</td>
+                <td>PhuongTM</td>
+                <td>22</td>
+                <td>Hanoi</td>
+                <td>
+                    <button id="btnDelete">Delete</button>
+                    <button id="btnUpdate">Update</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/DatabaseHandler.js"></script>
+    <script type="text/javascript" src="js/Student.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            function onDeviceReady() {
+                console.log("List page is ready");
+                getConnect('StudentDB');
+                showStudent(); 
+            }
+            
+            function showStudent(){
+                listStudent(function(lstStudent) {
+                    var tblListStudent = document.getElementById('tblListStudent');
+                    // refresh table
+                    tblListStudent.innerHTML = "";
+                    var tr = document.createElement('tr');
+                    var thID = document.createElement('th');                    
+                    var thName = document.createElement('th');
+                    var thAge = document.createElement('th');
+                    var thAddress = document.createElement('th');
+                    var thAction = document.createElement('th');
+                    
+                    thID.innerHTML = "ID";
+                    thName.innerHTML = "Name";
+                    thAge.innerHTML = "Age";
+                    thAddress.innerHTML = "Address";
+                    thAction.innerHTML = "Action";
+                    
+                    tr.appendChild(thID);
+                    tr.appendChild(thName);
+                    tr.appendChild(thAge);
+                    tr.appendChild(thAddress);
+                    tr.appendChild(thAction);
+                    
+                    tblListStudent.appendChild(tr);
+                    
+                    for (var i = 0; i < lstStudent.length; i++) {
+
+                        var tr = document.createElement('tr');
+                        var tdID = document.createElement('td');
+                        var tdName = document.createElement('td');
+                        var tdAge = document.createElement('td');
+                        var tdAddress = document.createElement('td');
+                        var tdAction = document.createElement('td');
+                        var btnDelete = document.createElement('button');
+                        btnDelete.id = lstStudent[i].id;
+                        btnDelete.innerHTML = "Delete";
+                        btnDelete.onclick = onDelete;
+                        var btnUpdate = document.createElement('button');
+                        btnUpdate.id = lstStudent[i].id;
+                        btnUpdate.innerHTML = "Update";
+                        btnUpdate.onclick = onUpdate;
+                        btnUpdate.setAttribute('data-student', '&name=' + lstStudent[i].name + '&age=' + lstStudent[i].age + '&address=' + lstStudent[i].address);
+                        tdID.innerHTML = lstStudent[i].id;
+                        tdName.innerHTML = lstStudent[i].name;
+                        tdAge.innerHTML = lstStudent[i].age;
+                        tdAddress.innerHTML = lstStudent[i].address;
+                                                
+                        tdAction.appendChild(btnDelete); 
+                        tdAction.appendChild(btnUpdate); 
+                        tr.appendChild(tdID);
+                        tr.appendChild(tdName);
+                        tr.appendChild(tdAge);
+                        tr.appendChild(tdAddress);
+                        tr.appendChild(tdAction);
+                        tblListStudent.appendChild(tr);
+                  }    
+                });
+            }
+            
+            function onDelete(event) {
+                var studentID = event.target.id;
+                console.log('Delete id: ' + studentID);
+                var result = confirm('Are you sure to delete student with id = ' + studentID);
+                if (result == true) {
+                    deleteStudent(studentID, function() {
+                        alert('Delete student successfully');
+                        showStudent();
+                    }, function(err) {
+                        alert('Error when delete student. Error code: ' + err.code);
+                    });
+                }
+                
+            }
+            
+            function onUpdate(event) {
+                var studentID = event.target.id;
+                var studentInfo = event.target.getAttribute('data-student');
+                console.log('Update id: ' + studentID);
+                window.location = 'update.html?id=' + studentID + studentInfo;
+            }
+    </script>
+</body>
+
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+7. Create **www/delete.html** file:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>DEMO CRUD - Delete Student</title>
+</head>
+
+<body>
+    <h1>DEMO CRUD - Delete Student</h1>
+    <div style="text-align: center">
+        <a href="index.html">Home</a>
+        <table align="center">
+            <tr>
+                <td>Student ID: </td>
+                <td>
+                    <input type="text" id="txtStudentID" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnDelete">Delete</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Student.js"></script>
+    <script type="text/javascript" src="js/DatabaseHandler.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+        
+            var txtStudentID = null;
+            
+            function onDeviceReady() {
+                console.log("Delete page is ready");
+                getConnect('StudentDB');
+                txtStudentID = document.getElementById('txtStudentID');
+                
+                var btnDelete = document.getElementById('btnDelete');
+                btnDelete.addEventListener('click', onDelete);
+            }
+            
+            function onDelete() {
+                var studentID = txtStudentID.value;
+                searchStudentByID(txtStudentID.value, function(student){
+                    // confirm before delete student
+                    var result = confirm('Are you sure to delete student id = ' + studentID);
+                    if (result == true) {
+                        // delete student
+                        deleteStudent(student.id, function(){
+                            alert('Student ' + student.id + ' has been deleted');
+                        }, function(err) {
+                            alert('Error when deleting student. Error code: ' + err.code);
+                        });
+                    } 
+                }, function(err) {
+                    alert('Student not found');
+                });
+            }
+    </script>
+</body>
+
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+8. After create our necessary files, run and connect to our app using PhoneGap
+Developer app:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap serve
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+9. Screenshots:
+
+Main screen:
+
+![](<tutorial_img/simple_crud_main.png>)
+
+Create student screen:
+
+![](<tutorial_img/simple_crud_create.png>)
+
+List students screen:
+
+![](<tutorial_img/simple_crud_list.png>)
+
+Delete screen:
+
+![](<tutorial_img/simple_crud_delete.png>)
