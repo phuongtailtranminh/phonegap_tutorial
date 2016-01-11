@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+
+    <title>Hello World</title>
+</head>
+
+<body>
+    <div style="text-align: center">
+        <table align=center>
+            <tr>
+                <td>Choose repeat date (use up/down arrow)</td>
+                <td>
+                    <input type="date" id="txtDate">
+                </td>
+                <td>
+                    <input type="text" placeholder="Hour" id="txtHour">
+                </td>
+                <td>
+                    <input type="text" placeholder="Minute" id="txtMinute">
+                </td>
+            </tr>
+            <tr>
+                <td>Title of notification: </td>
+                <td>
+                    <input type="text" id="txtTitle">
+                </td>
+            </tr>
+            <tr>
+                <td>Content of notification: </td>
+                <td>
+                    <input type="text" id="txtContent">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnSet">Set notification</button>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnUnset">Unset notification</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <!--<script type="text/javascript" src="js/index.js"></script>-->
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            
+            function onDeviceReady() {
+                var btnSet = document.getElementById('btnSet');
+                btnSet.addEventListener('click', onSetNotify);
+                
+                document.getElementById('btnUnset').addEventListener('click', onUnset);
+            }
+            
+            function onUnset() {
+                cordova.plugins.notification.local.cancel(1, function() {
+                    alert('Unsubcrible done');         
+                }, this);                
+            }
+            
+            function onSetNotify() {
+                 
+                var _title = document.getElementById('txtTitle').value;
+                var pattern = /(\d{4})-(\d{2})-(\d{2})/;
+                var txtDate = document.getElementById('txtDate');
+                if (txtDate.value) {
+                    var information = pattern.exec(txtDate.value);
+                    alert(information);
+                    var year = information[1];
+                    var month = information[2] - 1;
+                    var day = information[3];                
+                    var hour = document.getElementById('txtHour').value;
+                    var minute = document.getElementById('txtMinute').value;
+                    var _date = new Date(year, month, day, hour, minute);
+                    var _content = document.getElementById('txtContent').value;
+                    
+                    if (hour != "" && minute != "" && _content != "") {
+                        alert('Notification has been setted to: ' + _date);
+                        cordova.plugins.notification.local.schedule({
+                            id: 1,
+                            title: _title,
+                            at: _date,
+                            text: _content,
+                            sound:  'res://ios_ringtone.mp3',
+                            icon: 'res://gw_icon.png',
+                            data: { secretKey: 'oh-my-god'}
+                        });
+                        
+                        cordova.plugins.notification.local.on('click', function(notification) {
+                            var data = JSON.parse(notification.data);
+                            //alert(data.secretKey);
+                        });
+                    } else {
+                        alert('All fields are required');
+                    }                    
+                } else {
+                    alert('Date should be specify');
+                }
+
+            }
+    </script>
+</body>
+
+</html>
