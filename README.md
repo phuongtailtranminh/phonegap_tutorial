@@ -2022,3 +2022,5 @@ $phonegap run android
 5 Screenshots:
 
 ![](<tutorial_img/facebook_plugin_05.png>)
+
+![](<tutorial_img/facebook_plugin_06.png>)
