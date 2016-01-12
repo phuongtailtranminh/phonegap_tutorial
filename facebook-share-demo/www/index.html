@@ -39,7 +39,7 @@
         <button id="btnTakeSelfie">Take a selfie</button>
         <br>
         <button id="btnPost">Post to new feed</button>
-
+        
     </div>
 
     <div id="fb-root"></div>
@@ -51,7 +51,7 @@
             
             function onDeviceReady() {
                 console.log('Device is ready');
-
+                
                 document.getElementById('btnTakeSelfie').addEventListener('click', onTakeSelfie);
 
                 document.getElementById('btnPost').addEventListener('click', onPost);
@@ -74,11 +74,12 @@
                     var rs = confirm('Do you want to share your feeling to facebook?');
                     
                     if (rs == true) {
-                        facebookConnectPlugin.getLoginStatus(function(data) { 
-                            publishPhoto('Test caption');
-                         }, function() {
-                             onPost();
-                         });
+                        window.plugins.socialsharing.shareViaFacebook('Message via Facebook', imagePath, null, function() {
+                            console.log('Facebook share done');
+                        }, 
+                        function (errormsg) {
+                            alert(errormsg)
+                        });                        
                     }
                     
                 }
