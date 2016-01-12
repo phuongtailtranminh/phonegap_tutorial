@@ -1536,7 +1536,7 @@ doc](<https://github.com/katzer/cordova-plugin-local-notifications>)
 
  
 
-1. Execute following commands to create and install plugin:
+1.  Execute following commands to create and install plugin:
 
  
 
@@ -1572,7 +1572,7 @@ is used to add plugin into your project. You can check yourself by go to
 
  
 
-2. Next step, go to **index.html** and change source code into this:
+1.  Next step, go to **index.html** and change source code into this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <!DOCTYPE html>
@@ -1695,17 +1695,17 @@ is used to add plugin into your project. You can check yourself by go to
 
  
 
-3. Copy 2 files named:
-[gw\_icon.jpg](<notification-demo/platforms/android/res/drawable-hdpi/gw_icon.jpg>)
-and
-[ios\_ringtone.mp3](<notification-demo/platforms/android/res/drawable-hdpi/ios_ringtone.mp3>)
-to your **platforms/android/res/drawable-hdpi** folder.
+1.  Copy 2 files named:
+    [gw\_icon.jpg](<notification-demo/platforms/android/res/drawable-hdpi/gw_icon.jpg>)
+    and
+    [ios\_ringtone.mp3](<notification-demo/platforms/android/res/drawable-hdpi/ios_ringtone.mp3>)
+    to your **platforms/android/res/drawable-hdpi** folder.
 
  
 
-4. Open up your emulator.
+1.  Open up your emulator.
 
-5. Run these commands:
+2.  Run these commands:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $phonegap build android
@@ -1714,7 +1714,7 @@ $phonegap run android
 
 This will deploy our app to the emulator
 
-6. Screenshot
+1.  Screenshot
 
 -   Setting
 
@@ -1737,9 +1737,9 @@ current position.
 **Note: I tested with android emulator (Genymotion) but it doesn’t work. You
 need real device in this tutorial.**
 
-1. Firstly, you need to go to Google Developer Console to **enable Google MAP
-API Javascript service** and **create new Browser Key** (If you never do it
-before).
+1.  Firstly, you need to go to Google Developer Console to **enable Google MAP
+    API Javascript service** and **create new Browser Key** (If you never do it
+    before).
 
 Access: https://console.developers.google.com/apis
 
@@ -1759,17 +1759,16 @@ Enable Google Map API:
 
  
 
-2. Create new project:
+1.  Create new project:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $phonegap create google-map-api-demo
 $cd google-map-api-demo
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  
 
-3. Change your **index.html** into this code:
+1.  Change your **index.html** into this code:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <!DOCTYPE html>
@@ -1850,7 +1849,7 @@ $cd google-map-api-demo
 
  
 
-4. Run your app through PhoneGap Developer App:
+1.  Run your app through PhoneGap Developer App:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $phonegap serve
@@ -1858,7 +1857,7 @@ $phonegap serve
 
  
 
-5. Screenshots:
+1.  Screenshots:
 
 ![](<tutorial_img/google_map_06.png>)
 
@@ -1874,9 +1873,9 @@ post status to facebook.
 
  
 
-    1.  Go to: https://developers.facebook.com/apps/
-
-        Add new app:
+1.  Go to: https://developers.facebook.com/apps/  
+  
+Add new app:
 
 ![](<tutorial_img/facebook_plugin_01.png>)
 
@@ -1888,119 +1887,124 @@ post status to facebook.
 
 ![](<tutorial_img/facebook_plugin_04.png>)
 
-        Write down your **App ID** and **App Name** for next step
+Write down your **App ID **and** App Name** for next step  
+  
+1.  Create new project and add plugins:  
+  
+\$phonegap create facebook-share-demo  
+\$cd facebook-share-demo  
+\$phonegap platforms add android  
+\$phonegap plugin add https://github.com/Wizcorp/phonegap-facebook-plugin/
+--variable APP\_ID="Replace\_With\_Your\_App\_ID" --variable
+APP\_NAME="Replace\_With\_ Your\_App\_Name"  
+\$phonegap plugin add cordova-plugin-camera  
 
-    1.  Create new project and add plugins:
-
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        $phonegap create facebook-share-demo
-        $cd facebook-share-demo
-        $phonegap platforms add android
-        $phonegap plugin add https://github.com/Wizcorp/phonegap-facebook-plugin/ --variable APP_ID="Replace_With_Your_App_ID" --variable APP_NAME="Replace_With_ Your_App_Name"
-        $phonegap plugin add cordova-plugin-camera
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  
 
-    1.  Change your index.html into this code:
-
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        <!DOCTYPE html>
-
-        <html>
-
-        <head>
-            <meta charset="utf-8" />
-            <meta name="format-detection" content="telephone=no" />
-            <meta name="msapplication-tap-highlight" content="no" />
-            <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-            <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
-            />
-            <link rel="stylesheet" type="text/css" href="css/index.css" />
-            <title>Hello World</title>
-        </head>
-
-        <body style="text-align: center">
-            <img src="#" alt="#" id="myImage" width="200" height="200">
-
-            <div style="text-align: center">
-                <button id="btnTakeSelfie">Take a selfie</button>
-                <br>
-                <button id="btnPost">Post to new feed</button>
-
-            </div>
-
-            <div id="fb-root"></div>
-            
-            <script type="text/javascript" src="cordova.js"></script>
-            <script type="text/javascript">
-                document.addEventListener('deviceready', onDeviceReady, false);
-                    
-                    
-                    function onDeviceReady() {
-                        console.log('Device is ready');
-
-                        document.getElementById('btnTakeSelfie').addEventListener('click', onTakeSelfie);
-
-                        document.getElementById('btnPost').addEventListener('click', onPost);
-                    }
-                    
-                    function onTakeSelfie() {
-                        navigator.camera.getPicture(onSuccess, null, { 
-                            quality: 100,
-                            destinationType: Camera.DestinationType.FILE_URI,
-                            encodingType: Camera.EncodingType.PNG,
-                            targetWidth: 200,
-                            targetHeight: 200,
-                            saveToPhotoAlbum: true
-                        });
-
-                        function onSuccess(imagePath) {
-                            var image = document.getElementById('myImage');
-                            image.src = imagePath;
-                            
-                            var rs = confirm('Do you want to share your feeling to facebook?');
-                            
-                            if (rs == true) {
-                                facebookConnectPlugin.getLoginStatus(function(data) { 
-                                    publishPhoto('Test caption');
-                                 }, function() {
-                                     onPost();
-                                 });
-                            }
-                            
-                        }
-                                   
-                    }
-                    
-                    
-                    function onPost() {
-                        facebookConnectPlugin.login(["user_posts"], onLoginSuccess, null);
-                    }
-                    
-                    function onLoginSuccess() {
-                        publishPhoto();
-                    }
-                    
-                    function publishPhoto(_caption) {
-                        facebookConnectPlugin.showDialog( 
-                            {
-                                method: "feed",
-                                caption: _caption
-                            });           
-                    }
-            </script>
-        </body>
-
-        </html>
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    2.  Deploy your app: (Open up your emulator before run this command)
-
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        $phonegap run android
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    5   Screenshots:
+1.  Change your index.html into this code:  
+  
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~  
+\<!DOCTYPE html\>  
+  
+\<html\>  
+  
+\<head\>  
+\<meta charset="utf-8" /\>  
+\<meta name="format-detection" content="telephone=no" /\>  
+\<meta name="msapplication-tap-highlight" content="no" /\>  
+\<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height
+attributes. See https://issues.apache.org/jira/browse/CB-4323 --\>  
+\<meta name="viewport" content="user-scalable=no, initial-scale=1,
+maximum-scale=1, minimum-scale=1, width=device-width, height=device-height,
+target-densitydpi=device-dpi"  
+/\>  
+\<link rel="stylesheet" type="text/css" href="css/index.css" /\>  
+\<title\>Hello World\</title\>  
+\</head\>  
+  
+\<body style="text-align: center"\>  
+\<img src="\#" alt="\#" id="myImage" width="200" height="200"\>  
+  
+\<div style="text-align: center"\>  
+\<button id="btnTakeSelfie"\>Take a selfie\</button\>  
+\<br\>  
+\<button id="btnPost"\>Post to new feed\</button\>  
+  
+\</div\>  
+  
+\<div id="fb-root"\>\</div\>  
+  
+\<script type="text/javascript" src="cordova.js"\>\</script\>  
+\<script type="text/javascript"\>  
+document.addEventListener('deviceready', onDeviceReady, false);  
+  
+  
+function onDeviceReady() {  
+console.log('Device is ready');  
+  
+document.getElementById('btnTakeSelfie').addEventListener('click',
+onTakeSelfie);  
+  
+document.getElementById('btnPost').addEventListener('click', onPost);  
+}  
+  
+function onTakeSelfie() {  
+navigator.camera.getPicture(onSuccess, null, {  
+quality: 100,  
+destinationType: Camera.DestinationType.FILE\_URI,  
+encodingType: Camera.EncodingType.PNG,  
+targetWidth: 200,  
+targetHeight: 200,  
+saveToPhotoAlbum: true  
+});  
+  
+function onSuccess(imagePath) {  
+var image = document.getElementById('myImage');  
+image.src = imagePath;  
+  
+var rs = confirm('Do you want to share your feeling to facebook?');  
+  
+if (rs == true) {  
+facebookConnectPlugin.getLoginStatus(function(data) {  
+publishPhoto('Test caption');  
+}, function() {  
+onPost();  
+});  
+}  
+  
+}  
+  
+}  
+  
+  
+function onPost() {  
+facebookConnectPlugin.login(["user\_posts"], onLoginSuccess, null);  
+}  
+  
+function onLoginSuccess() {  
+publishPhoto();  
+}  
+  
+function publishPhoto(\_caption) {  
+facebookConnectPlugin.showDialog(  
+{  
+method: "feed",  
+caption: \_caption  
+});  
+}  
+\</script\>  
+\</body\>  
+  
+\</html\>  
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~  
+  
+2.  Deploy your app: (Open up your emulator before run this command)  
+  
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~  
+\$phonegap run android  
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~  
+  
+5   Screenshots:
 
 ![](<tutorial_img/facebook_plugin_05.png>)
