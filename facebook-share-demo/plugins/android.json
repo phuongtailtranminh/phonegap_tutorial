@@ -1,0 +1,23 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "phonegap-facebook-plugin": {
+            "APP_ID": "146062309060732",
+            "APP_NAME": "AndroidP",
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        }
+    },
+    "dependent_plugins": {}
+}
