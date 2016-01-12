@@ -870,7 +870,7 @@ $cd simple-crud
 Then, Let’s change our **www/index.html** file to make links to other page such
 as: create.html, list.html, update.html and delete.html
 
-1. Change your **www/index.html** body into this:
+1.  Change your **www/index.html** body into this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <body>
@@ -913,7 +913,7 @@ All your functions should run after device is ready.
 
  
 
-2. Create new **/www/js/DatabaseHandler.js** file with those code:
+1.  Create new **/www/js/DatabaseHandler.js** file with those code:
 
 Reference to [PhoneGap Storage
 API](<http://docs.phonegap.com/en/3.1.0/cordova_storage_storage.md.html#Storage>).
@@ -1008,7 +1008,7 @@ function listStudent(onSuccess) {
 
  
 
-3. Create **www/js/Student.js** file to store Student model:
+1.  Create **www/js/Student.js** file to store Student model:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Constructor
@@ -1033,7 +1033,7 @@ function setName(name) {
 
  
 
-4. Create **www/create.html** file:
+1.  Create **www/create.html** file:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <!DOCTYPE html>
@@ -1122,7 +1122,7 @@ function setName(name) {
 
  
 
-5. Create **www/update.html** file:
+1.  Create **www/update.html** file:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <!DOCTYPE html>
@@ -1265,7 +1265,7 @@ function setName(name) {
 
  
 
-6. Create **www/list.html** file:
+1.  Create **www/list.html** file:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <!DOCTYPE html>
@@ -1417,7 +1417,7 @@ function setName(name) {
 
  
 
-7. Create **www/delete.html** file:
+1.  Create **www/delete.html** file:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <!DOCTYPE html>
@@ -1496,8 +1496,8 @@ function setName(name) {
 
  
 
-8. After create our necessary files, run and connect to our app using PhoneGap
-Developer app:
+1.  After create our necessary files, run and connect to our app using PhoneGap
+    Developer app:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $phonegap serve
@@ -1505,7 +1505,7 @@ $phonegap serve
 
  
 
-9. Screenshots:
+1.  Screenshots:
 
 Main screen:
 
@@ -1522,3 +1522,485 @@ List students screen:
 Delete screen:
 
 ![](<tutorial_img/simple_crud_delete.png>)
+
+15. Local Notification
+----------------------
+
+In this tutorial I’ll show you how to create a local notification using
+**cordova-plugin-local-notifications**
+
+ 
+
+References: [cordova-plugin-local-notifications
+doc](<https://github.com/katzer/cordova-plugin-local-notifications>)
+
+ 
+
+1. Execute following commands to create and install plugin:
+
+ 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap create notification-demo
+$cd notification-demo
+$phonegap platforms add android
+$phonegap plugin add https://github.com/katzer/cordova-plugin-local-notifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+The command:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap platforms add android
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+is used to add android platform into your project. You can check yourself by go
+to **platforms** folder and see the new **android** folder in here.
+
+ 
+
+The command:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap plugin add https://github.com/katzer/cordova-plugin-local-notifications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+is used to add plugin into your project. You can check yourself by go to
+**plugins** folder and see the new folder named
+**de.appplant.cordova.plugin.local-notification** in here.
+
+ 
+
+2. Next step, go to **index.html** and change source code into this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+
+    <title>Hello World</title>
+</head>
+
+<body>
+    <div style="text-align: center">
+        <table align=center>
+            <tr>
+                <td>Choose repeat date (use up/down arrow)</td>
+                <td>
+                    <input type="date" id="txtDate">
+                </td>
+                <td>
+                    <input type="text" placeholder="Hour" id="txtHour">
+                </td>
+                <td>
+                    <input type="text" placeholder="Minute" id="txtMinute">
+                </td>
+            </tr>
+            <tr>
+                <td>Title of notification: </td>
+                <td>
+                    <input type="text" id="txtTitle">
+                </td>
+            </tr>
+            <tr>
+                <td>Content of notification: </td>
+                <td>
+                    <input type="text" id="txtContent">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnSet">Set notification</button>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="btnUnset">Unset notification</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <!--<script type="text/javascript" src="js/index.js"></script>-->
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            
+            function onDeviceReady() {
+                var btnSet = document.getElementById('btnSet');
+                btnSet.addEventListener('click', onSetNotify);
+                
+                document.getElementById('btnUnset').addEventListener('click', onUnset);
+            }
+            
+            function onUnset() {
+                cordova.plugins.notification.local.cancel(1, function() {
+                    alert('Unsubcrible done');         
+                }, this);                
+            }
+            
+            function onSetNotify() {
+                 
+                var _title = document.getElementById('txtTitle').value;
+                var pattern = /(\d{4})-(\d{2})-(\d{2})/;
+                var txtDate = document.getElementById('txtDate');
+                if (txtDate.value) {
+                    var information = pattern.exec(txtDate.value);                    
+                    var year = information[1];
+                    var month = information[2] - 1;
+                    var day = information[3];                
+                    var hour = document.getElementById('txtHour').value;
+                    var minute = document.getElementById('txtMinute').value;
+                    var _date = new Date(year, month, day, hour, minute);
+                    var _content = document.getElementById('txtContent').value;
+                    
+                    if (hour != "" && minute != "" && _content != "") {
+                        alert('Notification has been setted to: ' + _date);
+                        cordova.plugins.notification.local.schedule({
+                            id: 1,
+                            title: _title,
+                            at: _date,
+                            text: _content,
+                            sound:  'res://ios_ringtone.mp3',
+                            icon: 'res://gw_icon.png',
+                            data: { secretKey: 'oh-my-god'}
+                        });
+                        
+                        cordova.plugins.notification.local.on('click', function(notification) {
+                            var data = JSON.parse(notification.data);
+                            //alert(data.secretKey);
+                        });
+                    } else {
+                        alert('All fields are required');
+                    }                    
+                } else {
+                    alert('Date should be specify');
+                }
+
+            }
+    </script>
+</body>
+
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+3. Copy 2 files named:
+[gw\_icon.jpg](<notification-demo/platforms/android/res/drawable-hdpi/gw_icon.jpg>)
+and
+[ios\_ringtone.mp3](<notification-demo/platforms/android/res/drawable-hdpi/ios_ringtone.mp3>)
+to your **platforms/android/res/drawable-hdpi** folder.
+
+ 
+
+4. Open up your emulator.
+
+5. Run these commands:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap build android
+$phonegap run android
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This will deploy our app to the emulator
+
+6. Screenshot
+
+-   Setting
+
+![](<tutorial_img/local_notification_demo_01.png>)
+
+![](<tutorial_img/local_notification_demo_02.png>)
+
+-   Notifcation
+
+![](<tutorial_img/local_notification_demo_03.png>)
+
+ 
+
+16. Working with Google Map API:
+--------------------------------
+
+In this tutorial We’ll create an simple app using Google Map API to get our
+current position.
+
+**Note: I tested with android emulator (Genymotion) but it doesn’t work. You
+need real device in this tutorial.**
+
+1. Firstly, you need to go to Google Developer Console to **enable Google MAP
+API Javascript service** and **create new Browser Key** (If you never do it
+before).
+
+Access: https://console.developers.google.com/apis
+
+Sign in with your Google account.
+
+![](<tutorial_img/google_map_01.png>)
+
+Enable Google Map API:
+
+![](<tutorial_img/google_map_02.png>)
+
+![](<tutorial_img/google_map_03.png>)
+
+![](<tutorial_img/google_map_04.png>)
+
+![](<tutorial_img/google_map_05.png>)
+
+ 
+
+2. Create new project:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap create google-map-api-demo
+$cd google-map-api-demo
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+3. Change your **index.html** into this code:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+        <style>
+        html, body {
+            height: 80%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+        </style>        
+        <title>PhoneGap Google Map API Demo</title>
+    </head>
+    <body>
+            <div id="map"></div>
+            <div style="text-align: center">
+                <button id="btnGetCurrentPosition">Current Position</button>
+            </div> 
+        <script>
+            
+            document.addEventListener('deviceready', onDeviceReady, false);
+            
+            function onDeviceReady() {
+                
+                console.log('Geolocation object: ' + navigator.geolocation);
+                
+                document.getElementById('btnGetCurrentPosition').addEventListener('click', onGetCurrentPosition);
+
+            }
+            
+            function onGetCurrentPosition() {
+                
+                navigator.geolocation.getCurrentPosition(onSuccess, onError);                
+                
+            }
+            
+            function onSuccess(position) {
+                var lat = position.coords.latitude;
+                var long = position.coords.longitude;
+                initMap(lat, long);
+            };
+            
+            function onError(err) {
+                alert('Error when get current location. Error code: + ' + err.code);
+            }
+            
+            
+            var map;
+            function initMap(_lat, _long) {
+                if (_lat == undefined && _long == undefined) {
+                    _lat = 21.0283631;
+                    _long = 105.779485;
+                }
+                map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: _lat, lng: _long},
+                zoom: 16
+                });
+            }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKLE3E5texWiHncuQt0ionTKj_bZ5Llfs&callback=initMap"
+        async defer></script>
+
+        <script type="text/javascript" src="cordova.js"></script>
+    </body>
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+4. Run your app through PhoneGap Developer App:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap serve
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+5. Screenshots:
+
+![](<tutorial_img/google_map_06.png>)
+
+ 
+
+17. Working with Facebook:
+--------------------------
+
+ 
+
+In this tutorial We’ll create an app that take and save picture and we can also
+post status to facebook.
+
+ 
+
+    1.  Go to: https://developers.facebook.com/apps/
+
+        Add new app:
+
+![](<tutorial_img/facebook_plugin_01.png>)
+
+![](<tutorial_img/facebook_plugin_02.png>)
+
+![](<tutorial_img/facebook_plugin_03.png>)
+
+ 
+
+![](<tutorial_img/facebook_plugin_04.png>)
+
+        Write down your **App ID** and **App Name** for next step
+
+    1.  Create new project and add plugins:
+
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        $phonegap create facebook-share-demo
+        $cd facebook-share-demo
+        $phonegap platforms add android
+        $phonegap plugin add https://github.com/Wizcorp/phonegap-facebook-plugin/ --variable APP_ID="Replace_With_Your_App_ID" --variable APP_NAME="Replace_With_ Your_App_Name"
+        $phonegap plugin add cordova-plugin-camera
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+    1.  Change your index.html into this code:
+
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+            <meta charset="utf-8" />
+            <meta name="format-detection" content="telephone=no" />
+            <meta name="msapplication-tap-highlight" content="no" />
+            <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+            <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+            />
+            <link rel="stylesheet" type="text/css" href="css/index.css" />
+            <title>Hello World</title>
+        </head>
+
+        <body style="text-align: center">
+            <img src="#" alt="#" id="myImage" width="200" height="200">
+
+            <div style="text-align: center">
+                <button id="btnTakeSelfie">Take a selfie</button>
+                <br>
+                <button id="btnPost">Post to new feed</button>
+
+            </div>
+
+            <div id="fb-root"></div>
+            
+            <script type="text/javascript" src="cordova.js"></script>
+            <script type="text/javascript">
+                document.addEventListener('deviceready', onDeviceReady, false);
+                    
+                    
+                    function onDeviceReady() {
+                        console.log('Device is ready');
+
+                        document.getElementById('btnTakeSelfie').addEventListener('click', onTakeSelfie);
+
+                        document.getElementById('btnPost').addEventListener('click', onPost);
+                    }
+                    
+                    function onTakeSelfie() {
+                        navigator.camera.getPicture(onSuccess, null, { 
+                            quality: 100,
+                            destinationType: Camera.DestinationType.FILE_URI,
+                            encodingType: Camera.EncodingType.PNG,
+                            targetWidth: 200,
+                            targetHeight: 200,
+                            saveToPhotoAlbum: true
+                        });
+
+                        function onSuccess(imagePath) {
+                            var image = document.getElementById('myImage');
+                            image.src = imagePath;
+                            
+                            var rs = confirm('Do you want to share your feeling to facebook?');
+                            
+                            if (rs == true) {
+                                facebookConnectPlugin.getLoginStatus(function(data) { 
+                                    publishPhoto('Test caption');
+                                 }, function() {
+                                     onPost();
+                                 });
+                            }
+                            
+                        }
+                                   
+                    }
+                    
+                    
+                    function onPost() {
+                        facebookConnectPlugin.login(["user_posts"], onLoginSuccess, null);
+                    }
+                    
+                    function onLoginSuccess() {
+                        publishPhoto();
+                    }
+                    
+                    function publishPhoto(_caption) {
+                        facebookConnectPlugin.showDialog( 
+                            {
+                                method: "feed",
+                                caption: _caption
+                            });           
+                    }
+            </script>
+        </body>
+
+        </html>
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    2.  Deploy your app: (Open up your emulator before run this command)
+
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        $phonegap run android
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    5   Screenshots:
+
+![](<tutorial_img/facebook_plugin_05.png>)

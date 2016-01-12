@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Users\phuon\Desktop\notification-demo\platforms\android\CordovaLib\assets"/></dataSet><dataSet config="release"><source path="C:\Users\phuon\Desktop\notification-demo\platforms\android\CordovaLib\src\release\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="D:\Github_project\phonegap_tutorial\notification-demo\platforms\android\CordovaLib\assets"/></dataSet><dataSet config="release"><source path="D:\Github_project\phonegap_tutorial\notification-demo\platforms\android\CordovaLib\src\release\assets"/></dataSet></merger>
