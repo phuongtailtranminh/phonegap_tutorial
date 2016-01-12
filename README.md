@@ -1770,6 +1770,13 @@ $cd google-map-api-demo
 
 1.  Change your **index.html** into this code:
 
+Note that you need to change this line at bottom, replace YOUR\_API\_KEY to your
+Google Map API Key.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY=initMap" async defer></script>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <!DOCTYPE html>
 
@@ -1839,7 +1846,7 @@ $cd google-map-api-demo
                 });
             }
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKLE3E5texWiHncuQt0ionTKj_bZ5Llfs&callback=initMap"
+        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY=initMap"
         async defer></script>
 
         <script type="text/javascript" src="cordova.js"></script>
@@ -1873,8 +1880,8 @@ post status to facebook.
 
  
 
-1.  Go to: https://developers.facebook.com/apps/  
-  
+1.  Go to: https://developers.facebook.com/apps/
+
 Add new app:
 
 ![](<tutorial_img/facebook_plugin_01.png>)
@@ -1887,12 +1894,11 @@ Add new app:
 
 ![](<tutorial_img/facebook_plugin_04.png>)
 
-    **Write down your App ID and App Name for next step.    **
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**Write down your App ID and App Name for next step.    **
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  
-1.  Create new project and add plugins:  
-  
-
+1.  Create new project and add plugins:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $phonegap create facebook-share-demo
@@ -1906,8 +1912,7 @@ $phonegap plugin add cordova-plugin-camera
 
  
 
-2.  Change your index.html into this code:  
-
+1.  Change your index.html into this code:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <!DOCTYPE html>
@@ -2002,14 +2007,12 @@ $phonegap plugin add cordova-plugin-camera
 
  
 
-3. Deploy your app: (Open up your emulator before run this command)
+1.  Deploy your app: (Open up your emulator before run this command)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $phonegap run android
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  
-  
-5   Screenshots:
+5 Screenshots:
 
 ![](<tutorial_img/facebook_plugin_05.png>)
