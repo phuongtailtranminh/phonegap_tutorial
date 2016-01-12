@@ -1878,6 +1878,8 @@ $phonegap serve
 In this tutorial We’ll create an app that take and save picture and we can also
 post status to facebook.
 
+**This tutorial require Facebook App installed on your device.**
+
  
 
 1.  Go to: https://developers.facebook.com/apps/
@@ -1906,6 +1908,7 @@ $cd facebook-share-demo
 $phonegap platforms add android
 $phonegap plugin add https://github.com/Wizcorp/phonegap-facebook-plugin/ --variable APP_ID="replace_with_your_appid" --variable APP_NAME="replace_with_your_appname"
 $phonegap plugin add cordova-plugin-camera
+$phonegap plugin add cordova-plugin-x-socialsharing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  
@@ -1937,7 +1940,7 @@ $phonegap plugin add cordova-plugin-camera
         <button id="btnTakeSelfie">Take a selfie</button>
         <br>
         <button id="btnPost">Post to new feed</button>
-
+        
     </div>
 
     <div id="fb-root"></div>
@@ -1949,7 +1952,7 @@ $phonegap plugin add cordova-plugin-camera
             
             function onDeviceReady() {
                 console.log('Device is ready');
-
+                
                 document.getElementById('btnTakeSelfie').addEventListener('click', onTakeSelfie);
 
                 document.getElementById('btnPost').addEventListener('click', onPost);
@@ -1972,11 +1975,12 @@ $phonegap plugin add cordova-plugin-camera
                     var rs = confirm('Do you want to share your feeling to facebook?');
                     
                     if (rs == true) {
-                        facebookConnectPlugin.getLoginStatus(function(data) { 
-                            publishPhoto('Test caption');
-                         }, function() {
-                             onPost();
-                         });
+                        window.plugins.socialsharing.shareViaFacebook('Message via Facebook', imagePath, null, function() {
+                            console.log('Facebook share done');
+                        }, 
+                        function (errormsg) {
+                            alert(errormsg)
+                        });                        
                     }
                     
                 }
@@ -2001,6 +2005,8 @@ $phonegap plugin add cordova-plugin-camera
             }
     </script>
 </body>
+
+</html>
 
 </html>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
