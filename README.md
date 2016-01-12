@@ -1887,123 +1887,128 @@ Add new app:
 
 ![](<tutorial_img/facebook_plugin_04.png>)
 
-Write down your **App ID **and** App Name** for next step  
+    **Write down your App ID and App Name for next step.    **
+
   
 1.  Create new project and add plugins:  
   
-\$phonegap create facebook-share-demo  
-\$cd facebook-share-demo  
-\$phonegap platforms add android  
-\$phonegap plugin add https://github.com/Wizcorp/phonegap-facebook-plugin/
---variable APP\_ID="Replace\_With\_Your\_App\_ID" --variable
-APP\_NAME="Replace\_With\_ Your\_App\_Name"  
-\$phonegap plugin add cordova-plugin-camera  
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap create facebook-share-demo
+$cd facebook-share-demo
+$phonegap platforms add android
+$phonegap plugin add https://github.com/Wizcorp/phonegap-facebook-plugin/ --variable APP_ID="replace_with_your_appid" --variable APP_NAME="replace_with_your_appname"
+$phonegap plugin add cordova-plugin-camera
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  
 
-1.  Change your index.html into this code:  
+ 
+
+2.  Change your index.html into this code:  
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"
+    />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <title>Hello World</title>
+</head>
+
+<body style="text-align: center">
+    <img src="#" alt="#" id="myImage" width="200" height="200">
+
+    <div style="text-align: center">
+        <button id="btnTakeSelfie">Take a selfie</button>
+        <br>
+        <button id="btnPost">Post to new feed</button>
+
+    </div>
+
+    <div id="fb-root"></div>
+    
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', onDeviceReady, false);
+            
+            
+            function onDeviceReady() {
+                console.log('Device is ready');
+
+                document.getElementById('btnTakeSelfie').addEventListener('click', onTakeSelfie);
+
+                document.getElementById('btnPost').addEventListener('click', onPost);
+            }
+            
+            function onTakeSelfie() {
+                navigator.camera.getPicture(onSuccess, null, { 
+                    quality: 100,
+                    destinationType: Camera.DestinationType.FILE_URI,
+                    encodingType: Camera.EncodingType.PNG,
+                    targetWidth: 200,
+                    targetHeight: 200,
+                    saveToPhotoAlbum: true
+                });
+
+                function onSuccess(imagePath) {
+                    var image = document.getElementById('myImage');
+                    image.src = imagePath;
+                    
+                    var rs = confirm('Do you want to share your feeling to facebook?');
+                    
+                    if (rs == true) {
+                        facebookConnectPlugin.getLoginStatus(function(data) { 
+                            publishPhoto('Test caption');
+                         }, function() {
+                             onPost();
+                         });
+                    }
+                    
+                }
+                           
+            }
+            
+            
+            function onPost() {
+                facebookConnectPlugin.login(["user_posts"], onLoginSuccess, null);
+            }
+            
+            function onLoginSuccess() {
+                publishPhoto();
+            }
+            
+            function publishPhoto(_caption) {
+                facebookConnectPlugin.showDialog( 
+                    {
+                        method: "feed",
+                        caption: _caption
+                    });           
+            }
+    </script>
+</body>
+
+</html>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+3. Deploy your app: (Open up your emulator before run this command)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+$phonegap run android
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   
-\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~  
-\<!DOCTYPE html\>  
-  
-\<html\>  
-  
-\<head\>  
-\<meta charset="utf-8" /\>  
-\<meta name="format-detection" content="telephone=no" /\>  
-\<meta name="msapplication-tap-highlight" content="no" /\>  
-\<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height
-attributes. See https://issues.apache.org/jira/browse/CB-4323 --\>  
-\<meta name="viewport" content="user-scalable=no, initial-scale=1,
-maximum-scale=1, minimum-scale=1, width=device-width, height=device-height,
-target-densitydpi=device-dpi"  
-/\>  
-\<link rel="stylesheet" type="text/css" href="css/index.css" /\>  
-\<title\>Hello World\</title\>  
-\</head\>  
-  
-\<body style="text-align: center"\>  
-\<img src="\#" alt="\#" id="myImage" width="200" height="200"\>  
-  
-\<div style="text-align: center"\>  
-\<button id="btnTakeSelfie"\>Take a selfie\</button\>  
-\<br\>  
-\<button id="btnPost"\>Post to new feed\</button\>  
-  
-\</div\>  
-  
-\<div id="fb-root"\>\</div\>  
-  
-\<script type="text/javascript" src="cordova.js"\>\</script\>  
-\<script type="text/javascript"\>  
-document.addEventListener('deviceready', onDeviceReady, false);  
-  
-  
-function onDeviceReady() {  
-console.log('Device is ready');  
-  
-document.getElementById('btnTakeSelfie').addEventListener('click',
-onTakeSelfie);  
-  
-document.getElementById('btnPost').addEventListener('click', onPost);  
-}  
-  
-function onTakeSelfie() {  
-navigator.camera.getPicture(onSuccess, null, {  
-quality: 100,  
-destinationType: Camera.DestinationType.FILE\_URI,  
-encodingType: Camera.EncodingType.PNG,  
-targetWidth: 200,  
-targetHeight: 200,  
-saveToPhotoAlbum: true  
-});  
-  
-function onSuccess(imagePath) {  
-var image = document.getElementById('myImage');  
-image.src = imagePath;  
-  
-var rs = confirm('Do you want to share your feeling to facebook?');  
-  
-if (rs == true) {  
-facebookConnectPlugin.getLoginStatus(function(data) {  
-publishPhoto('Test caption');  
-}, function() {  
-onPost();  
-});  
-}  
-  
-}  
-  
-}  
-  
-  
-function onPost() {  
-facebookConnectPlugin.login(["user\_posts"], onLoginSuccess, null);  
-}  
-  
-function onLoginSuccess() {  
-publishPhoto();  
-}  
-  
-function publishPhoto(\_caption) {  
-facebookConnectPlugin.showDialog(  
-{  
-method: "feed",  
-caption: \_caption  
-});  
-}  
-\</script\>  
-\</body\>  
-  
-\</html\>  
-\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~  
-  
-2.  Deploy your app: (Open up your emulator before run this command)  
-  
-\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~  
-\$phonegap run android  
-\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~  
   
 5   Screenshots:
 
