@@ -83,6 +83,11 @@
                 center: {lat: _lat, lng: _long},
                 zoom: 16
                 });
+                
+                map.addListener('click', function (e) {
+                    alert(e.latLng.toString());
+                });
+                
             }
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKLE3E5texWiHncuQt0ionTKj_bZ5Llfs&callback=initMap"
