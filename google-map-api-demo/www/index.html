@@ -29,69 +29,234 @@
         <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
         <style>
         html, body {
-            height: 80%;
+            height: 100%;
             margin: 0;
             padding: 0;
         }
         #map {
-            height: 100%;
+            height: 80%;
         }
         </style>        
         <title>PhoneGap Google Map API Demo</title>
     </head>
     <body>
-            <div id="map"></div>
-            <div style="text-align: center">
-                <button id="btnGetCurrentPosition">Current Position</button>
-            </div> 
+        
+        <div id="map"></div>
+        <div style="text-align: center">
+            <button id="btnGetCurrentPosition">Current Position</button>
+        </div> 
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKLE3E5texWiHncuQt0ionTKj_bZ5Llfs&callback=onDeviceReady"
+        async defer></script>        
         <script>
-            
+                       
             document.addEventListener('deviceready', onDeviceReady, false);
             
-            function onDeviceReady() {
-                
-                console.log('Geolocation object: ' + navigator.geolocation);
-                
-                document.getElementById('btnGetCurrentPosition').addEventListener('click', onGetCurrentPosition);
-
-            }
-            
-            function onGetCurrentPosition() {
-                
-                navigator.geolocation.getCurrentPosition(onSuccess, onError);                
-                
-            }
-            
-            function onSuccess(position) {
-                var lat = position.coords.latitude;
-                var long = position.coords.longitude;
-                initMap(lat, long);
-            };
-            
-            function onError(err) {
-                alert('Error when get current location. Error code: + ' + err.code);
-            }
-            
-            
+            // Global variables
             var map;
-            function initMap(_lat, _long) {
-                if (_lat == undefined && _long == undefined) {
-                    _lat = 21.0283631;
-                    _long = 105.779485;
-                }
+            var db = null;
+            var infoWindow;            
+            var listMarkers = [];
+            
+            function onDeviceReady() {
+                initMap();
+                // Handle Get Current Position button
+                document.getElementById('btnGetCurrentPosition').addEventListener('click', onGetCurrentPosition);
+                
+                // Handle Database when init app
+                getConnect("UserLocations");
+                createTable();                
+                getListPosition(listMarkers, map);
+                
+            }
+            
+            var previousPositionMarker = null;            
+            // Function that handle click event for button btnGetCurrentPosition
+            function onGetCurrentPosition() {
+                if (previousPositionMarker != null) {
+                    previousPositionMarker.setMap(null);
+                }                
+                navigator.geolocation.getCurrentPosition(onSuccess, onError);
+                    
+                function onSuccess(position) {
+                    var _lat = position.coords.latitude;
+                    var _long = position.coords.longitude;
+                    map.setCenter({lat: _lat, lng: _long});
+                    
+                    var marker = new google.maps.Marker({
+                        position: {lat: _lat, lng: _long}
+                    });
+                    
+                    previousPositionMarker = marker;
+                    
+                    marker.setMap(map);
+                };
+                
+                function onError(err) {
+                    alert('Error when get current location. Error code: + ' + err.code);
+                }                            
+                
+            }            
+            
+            // Initialize the map
+            function initMap() {
+                var _lat = 21.0283631;
+                var _long = 105.779485;
                 map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: _lat, lng: _long},
                 zoom: 16
                 });
-                
-                map.addListener('click', function (e) {
-                    alert(e.latLng.toString());
-                });
+
+                //store the original setContent-function
+                var fx_InfoWindow_SetContent = google.maps.InfoWindow.prototype.setContent;
+
+                //override the built-in setContent-method
+                google.maps.InfoWindow.prototype.setContent = function (content, isMarker) {
+                    infoWindow = this;
+                    if (isMarker == undefined) {
+                        content = content.innerHTML + '<br/> <a href="#" onclick="onSavePlace();">Save place</a>';
+                    }
+                    //run the original setContent-method
+                    fx_InfoWindow_SetContent.apply(this, arguments);
+                };                     
                 
             }
+
+            // This function handle the event when click on POI Save Place link
+            function onSavePlace() {                
+                
+                var _lat = infoWindow.getPosition().lat();
+                var _long = infoWindow.getPosition().lng();
+                infoWindow.close();
+                // Insert Position to Database
+                insertPosition(_lat, _long, updateUI);
+                // Update Marker to the map
+                function updateUI() {
+                    var marker = new google.maps.Marker({
+                        position: {lat: _lat, lng: _long}
+                    });
+                    
+                    listMarkers.push(marker);
+                    
+                    var markerInfoWindow = new google.maps.InfoWindow();
+                    markerInfoWindow.setContent('<a href="#" onclick="onUnsavePlace(' + _lat + ',' + _long + ');">Unsave place</a>', true);                    
+                    marker.addListener('click', function() {
+                        markerInfoWindow.open(map, this);
+                    });
+                    
+                    marker.setMap(map);                      
+                }
+                
+            }
+      
+            // This function handle the event when click on POI UnSave Place link
+            function onUnsavePlace(lat, long){
+                
+                for(var i = 0; i < listMarkers.length; i++) {
+                    currentMarker = listMarkers[i];
+                    var markerLat = currentMarker.getPosition().lat();
+                    var markerLong = currentMarker.getPosition().lng();
+                                      
+                    if (markerLat == lat && markerLong == long) {
+   
+                        currentMarker.setMap(null);
+                        deletePosition(markerLat, markerLong);
+                        listMarkers.splice(i, 1); 
+                    } 
+                }
+            }            
+            
+            // Make a connect to database with database name, if database doens't exist it will create it with given name.
+            function getConnect(dbName) {
+                db = window.openDatabase(dbName, "1.0", dbName, 2000000);
+            }
+            
+            
+            // Create an table if it isn't exist
+            function createTable() {
+                db.transaction(function(tx){
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS Position (Lat, Long)');
+                }, function(err){
+                    console.log('Error when create table. Error code: ' + err.code);
+                }, function(){
+                    console.log('Create table successfully!');
+                });
+            }
+            
+            
+            // Insert Position to database with given: lat, long and updateUI callback function
+            function insertPosition(lat, long, updateUI) {
+                db.transaction(function(tx){
+                    tx.executeSql('INSERT INTO Position(Lat, Long) VALUES (?, ?)', [lat, long]);
+                }, function(err){
+                    console.log('Error when insert data. Error code: ' + err.code);
+                }, function(){
+                    console.log('Insert data successfully!');
+                    updateUI();                  
+                });
+            }
+            
+            // Delete position, because lat and long can merge to create unique object
+            function deletePosition(lat, long){
+                db.transaction(function(tx){
+                    tx.executeSql('DELETE FROM Position WHERE Lat = ? and Long = ?', [lat, long]);
+                }, function(err){
+                    console.log('Error when delete data. Error code: ' + err.code);
+                }, function(){
+                    console.log('Delete data successfully!');
+                });
+            }
+            
+            // This object is used to store position
+            function SavedPosition(lat, long) {
+                this.lat = lat;
+                this.long = long;
+            }
+                        
+            // Get List Position and store it in listMarkers array
+            function getListPosition(listMarkers, map){
+                db.transaction(function(tx){
+                    tx.executeSql('SELECT * FROM Position', [], function(tx, rs) {
+                        var numberOfItems = rs.rows.length; 
+                        
+                        var markerInfoWindow = new google.maps.InfoWindow();
+                        var marker;
+                        
+                        for (var i = 0; i < numberOfItems; i++) {
+
+                            var _lat = rs.rows.item(i).Lat;
+                            var _long = rs.rows.item(i).Long;
+
+                            marker = new google.maps.Marker({
+                                position: {lat: _lat , lng: _long}
+                            });
+                            
+                            listMarkers.push(marker);
+                            
+                            google.maps.event.addListener(marker, 'click', function (evt) {
+                                markerInfoWindow.setContent('<a href="#" onclick="onUnsavePlace(' + this.getPosition().lat() + ',' + this.getPosition().lng() + ');">Unsave place</a>', true);
+                                markerInfoWindow.open(map, this); 
+                            });
+
+                            
+                            marker.setMap(map); 
+                            
+                            // Set map center to the last marker
+                            if (i == numberOfItems - 1){
+                                map.setCenter({lat: _lat, lng: _long});
+                            } 
+                            
+                        }
+ 
+                    });
+                }, function(err){
+                    console.log('Error when get list position. Error code: ' + err.code);
+                });
+            }
+
+            
+            
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKLE3E5texWiHncuQt0ionTKj_bZ5Llfs&callback=initMap"
-        async defer></script>
+        
 
         <script type="text/javascript" src="cordova.js"></script>
     </body>
