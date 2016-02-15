@@ -19,26 +19,12 @@
         <button class="btn btn-link btn-nav pull-left">
             <span class="icon icon-left-nav"></span><a href="index.html">Home</a>
         </button>
-        <h1 class="title" style="text-align: center">Mad Discovery</h1>
+        <h1 class="title" style="text-align: center">Mad Discovery - List Event</h1>
     </header>
 
     <div class="content">
         <br/>
         <ul class="table-view">
-            <li class="table-view-cell media">
-                <a class="navigate-right">
-                    <img class="media-object pull-left" src="http://placehold.it/42x42">
-                    <div class="media-body">
-                        Name
-                        <p>Location: a</p>
-                        <p>Date: b</p>
-                        <p>Start Time: cccccccccccc</p>
-                        <p>Organize Name: d</p>
-                    </div>
-                </a>
-                <button class="btn btn-positive" style="margin-right: 10%">Update</button>
-                <button class="btn btn-negative">Delete</button>
-            </li>
         </ul>
     </div>
     <script type="text/javascript" src="cordova.js"></script>
@@ -52,7 +38,8 @@
                 
                 var tableEvent = document.getElementsByClassName("table-view")[0];
                 
-                // initTable(tableEvent);
+                // clear table after deleted
+                initTable(tableEvent);
                 
                 if (listEvents.length > 0) {
                     
@@ -70,6 +57,7 @@
                         // set class name for li
                         li.className = "table-view-cell media";
                         // create a for navigate right
+                        
                         var a_nagivate_right = document.createElement("a");
                         a_nagivate_right.className = "navigate-right";
                         
@@ -79,12 +67,12 @@
                         img.src = "http://placehold.it/42x42";
                         
                         // create div to hold event's information
-                        var info_div = document.createElement("media-body");
+                        var info_div = document.createElement("div");
                         info_div.className = "media-body";
                         
                         // display event's information
                         var span_for_name = document.createElement("span");
-                        span_for_name.innerHTML = currentEvent["EventName"];
+                        span_for_name.innerText = currentEvent["EventName"];
                         var p_for_loc = document.createElement("p");
                         p_for_loc.innerText = "Location: " + currentEvent["EventLocation"];
                         var p_for_date = document.createElement("p");
@@ -107,20 +95,22 @@
                         
                         // create delete button
                         var btnDelete = document.createElement("button");
-                        btnDelete.innerHTML = "Delete";
+                        btnDelete.innerText = "Delete";
                         btnDelete.id = currentEvent["ID"];
                         btnDelete.onclick = confirmDelete;
                         btnDelete.className = "btn btn-negative";
                         // create update button
                         var btnUpdate = document.createElement("button");
-                        btnUpdate.innerHTML = "Update";
+                        btnUpdate.innerText = "Update";
                         btnUpdate.id = currentEvent["ID"];
                         btnUpdate.onclick = redirect;
-                        btnUpdate.className = "btn btn-positive";                        
+                        btnUpdate.className = "btn btn-positive";
+                        btnUpdate.style.marginRight = "10%";
+                        
                         // append to li
                         li.appendChild(a_nagivate_right);
-                        li.appendChild(btnDelete);
                         li.appendChild(btnUpdate);
+                        li.appendChild(btnDelete);
                         
                         // append to ul
                         tableEvent.appendChild(li);
@@ -131,29 +121,6 @@
             
             function initTable(tableElement) {
                 tableElement.innerHTML = "";
-                var tr = document.createElement("tr");
-                var tdID = document.createElement("td");
-                tdID.innerHTML = "ID";
-                var tdName = document.createElement("td");
-                tdName.innerHTML = "Name";
-                var tdLocation = document.createElement("td");
-                tdLocation.innerHTML = "Location";
-                var tdDate = document.createElement("td");
-                tdDate.innerHTML = "Date";
-                var tdStartTime = document.createElement("td");
-                tdStartTime.innerHTML = "Start Time";
-                var tdOrgName = document.createElement("td");
-                tdOrgName.innerHTML = "Organize Name";
-                var tdAction = document.createElement("td");
-                tdAction.innerHTML = "Action";
-                tr.appendChild(tdID);
-                tr.appendChild(tdName);
-                tr.appendChild(tdLocation);
-                tr.appendChild(tdDate);
-                tr.appendChild(tdStartTime);
-                tr.appendChild(tdOrgName);
-                tr.appendChild(tdAction);
-                tableElement.appendChild(tr);
             }
             
                             
